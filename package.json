@@ -1,0 +1,16 @@
+{
+  "name": "pl.micz84.gameobjectpilot",
+  "version": "1.0.0",
+  "displayName": "GameObject Pilot",
+  "description": "Simple tool that allows to move any selected GameObject and continuously align it with scene view. Handy for setting camera.",
+  "unity": "2022.3",
+  "dependencies": {
+ },
+ "keywords": [
+    "Undo"
+  ],
+  "author": {
+    "name": "Micz84",
+    "url": "https://github.com/micz84"
+  }
+}
