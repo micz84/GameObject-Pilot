@@ -1,4 +1,6 @@
+using System;
 using UnityEditor;
+using UnityEditor.EditorTools;
 using UnityEditor.Overlays;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -14,9 +16,13 @@ namespace pl.micz84.gameobjectpilot.Editor
 
         private bool _state = false;
         private Button _button = null;
-
+        internal static event Action<bool> OnDisplayedChanged;
         public GameObjectPilotOverlay() : base(TOOLS_IDS)
         {
+            displayedChanged += b =>
+            {
+                OnDisplayedChanged?.Invoke(b);
+            };
         }
     }
 }
