@@ -8,22 +8,27 @@ namespace pl.micz84.gameobjectpilot.Editor
 {
     [EditorToolbarElement(ID, typeof(SceneView))]
     [Icon("Packages/pl.micz84.gameobjectpilot/Runtime/Icons/camera.png")]
-    public class PilotGameObjectTool : EditorToolbarToggle, IDisposable
+    public class PilotGameObjectTool : EditorToolbarToggle
     {
-        private static PilotGameObjectTool _previousTool;
         public const string ID = "pilot-game-object-tool";
 
         public PilotGameObjectTool()
         {
-            _previousTool?.Dispose();
-
-            text = "";
             icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
                 "Packages/pl.micz84.gameobjectpilot/Runtime/Icons/camera.png");
             tooltip = "Pilot GameObject";
-            _previousTool = this;
-
+            GameObjectPilotOverlay.OnDisplayedChanged += OnDisplayedChangedHandler;
             RegisterCallback<ChangeEvent<bool>>(ChangeEventCallback);
+        }
+
+        private void OnDisplayedChangedHandler(bool isShown)
+        {
+            if(isShown)
+                return;
+            
+            UnregisterCallback<ChangeEvent<bool>>(ChangeEventCallback);
+            SceneView.duringSceneGui -= SceneViewOnDuringSceneGui;
+            GameObjectPilotOverlay.OnDisplayedChanged -= OnDisplayedChangedHandler;
         }
 
         private void ChangeEventCallback(ChangeEvent<bool> evt)
@@ -48,8 +53,5 @@ namespace pl.micz84.gameobjectpilot.Editor
                 t.rotation = rotation;
             }
         }
-
-
-        public void Dispose() => UnregisterCallback<ChangeEvent<bool>>(ChangeEventCallback);
     }
 }
