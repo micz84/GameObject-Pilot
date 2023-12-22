@@ -16,7 +16,6 @@ namespace pl.micz84.gameobjectpilot.Editor
         public PilotGameObjectTool()
         {
             _previousTool?.Dispose();
-
             text = "";
             icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
                 "Packages/pl.micz84.gameobjectpilot/Runtime/Icons/camera.png");
@@ -25,7 +24,7 @@ namespace pl.micz84.gameobjectpilot.Editor
 
             RegisterCallback<ChangeEvent<bool>>(ChangeEventCallback);
         }
-
+        
         private void ChangeEventCallback(ChangeEvent<bool> evt)
         {
             if (evt.newValue)
@@ -50,6 +49,10 @@ namespace pl.micz84.gameobjectpilot.Editor
         }
 
 
-        public void Dispose() => UnregisterCallback<ChangeEvent<bool>>(ChangeEventCallback);
+        public void Dispose()
+        {
+            UnregisterCallback<ChangeEvent<bool>>(ChangeEventCallback);
+            SceneView.duringSceneGui -= SceneViewOnDuringSceneGui;
+        }
     }
 }
